@@ -59,7 +59,7 @@
 
 
     gulp.task('autoprefixer', function(){
-        return gulp.src( destinations.css )
+        return gulp.src(paths.dest.css )
             .pipe( plumber() )
             .pipe( prefix([
                 'last 2 versions',
@@ -81,7 +81,7 @@
 
 
     gulp.task('stylus', function(){
-        return gulp.src( sources.stylus )
+        return gulp.src( paths.src.stylus )
             .pipe( plumber() )
             .pipe( sourcemaps.init() )
             .pipe( stylus({

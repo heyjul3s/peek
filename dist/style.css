@@ -1,0 +1,30 @@
+.peek {
+  height: 200px;
+  -webkit-transition: -webkit-transform 500ms ease-out;
+  -moz-transition: -moz-transform 500ms ease-out;
+  -o-transition: -o-transform 500ms ease-out;
+  -ms-transition: -ms-transform 500ms ease-out;
+  transition: transform 500ms ease-out;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.peek .slide.item-1 {
+  background-color: #f00;
+}
+.peek .slide.item-2 {
+  background-color: #ffa500;
+}
+.peek .slide.item-3 {
+  background-color: #ff0;
+}
+.peek .slide.item-4 {
+  background-color: #008000;
+}
+.peek .slide.item-5 {
+  background-color: #00f;
+}
+
+/*# sourceMappingURL=style.css.map */
