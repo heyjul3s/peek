@@ -1,5 +1,4 @@
-
-(function(window, document){
+;(function(window, document){
     'use strict';
 
     document.addEventListener('DOMContentLoaded', function(){
@@ -7,27 +6,58 @@
         peek.init();
     });
 
-    //default parametes
+    //needs default parametes
     function _Peek(element) {
 
-            let slider      = element,
-                slides      = Array.from(element.querySelectorAll('.slider')),
-                slidesCount = slides.length;
+        //vars
+        let slider       = element,
+            slides       = Array.from(element.querySelectorAll('.slide')),
+            slidesCount  = slides.length,
+            currentIndex = 0,
+            lastIndex    = 0;
 
         function init() {
-            console.log(slidesCount);
+            slider.style.width = 100 * slidesCount + '%';
+
+            slides.forEach(function(slide){
+                slide.style.width = 100 / slidesCount + '%';
+            });
+
+            peekDotNavigation();
         }
 
-        //peek width: 100 * slidesCount + '%'
 
-        function peekSlides() {
+        //actual slide functionality
+        function peekSlide() {
+
         }
 
-        function peekButtons() {
+
+        //callback
+        function peekDotNavigation() {
+            createPeekDots();
         }
 
-        function peekDots() {
+
+        function createPeekDots () {
+            let frag   = document.createDocumentFragment(),
+                dotNav = document.createElement('nav'),
+                anchor;
+
+            //offset index by 1, for naming purposes
+            for ( let i = 1; i < slidesCount + 1; i += 1 ) {
+                anchor = document.createElement('a');
+                anchor.className = 'peek-dot dot-' + i;
+
+                dotNav.appendChild(anchor);
+            }
+
+            dotNav.className = 'peek-dots';
+
+            frag.appendChild(dotNav);
+            slider.parentNode.appendChild(frag);
         }
+
 
         return Object.freeze({
             init : init

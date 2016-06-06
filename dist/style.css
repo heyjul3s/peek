@@ -1,5 +1,12 @@
+.peek-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding: 40px 0;
+}
 .peek {
-  height: 200px;
+  background-color: #800080;
+  height: 420px;
   -webkit-transition: -webkit-transform 500ms ease-out;
   -moz-transition: -moz-transform 500ms ease-out;
   -o-transition: -o-transform 500ms ease-out;
@@ -10,21 +17,59 @@
   -o-transform: translate3d(0, 0, 0);
   -ms-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
+  white-space: nowrap;
 }
-.peek .slide.item-1 {
+.slide {
+  float: left;
+  display: block;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+.slide.item-1 {
   background-color: #f00;
 }
-.peek .slide.item-2 {
+.slide.item-2 {
   background-color: #ffa500;
 }
-.peek .slide.item-3 {
+.slide.item-3 {
   background-color: #ff0;
 }
-.peek .slide.item-4 {
+.slide.item-4 {
   background-color: #008000;
 }
-.peek .slide.item-5 {
+.slide.item-5 {
   background-color: #00f;
+}
+.peek-dots {
+  width: 100%;
+  padding: 40px 0;
+  background: #ffc0cb;
+  text-align: center;
+}
+.peek-dots .peek-dot {
+  display: inline-block;
+  position: relative;
+  width: 26px;
+  height: 26px;
+  margin: 0 5px;
+  background-color: #000;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.peek-dots .peek-dot::before,
+.peek-dots .peek-dot::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background-color: #f00;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
 }
 
 /*# sourceMappingURL=style.css.map */

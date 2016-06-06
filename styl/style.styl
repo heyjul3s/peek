@@ -1,21 +1,71 @@
 
-.peek
-    height 200px
-    transition transform 500ms ease-out
-    transform translate3d(0, 0, 0)
+.peek-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 0;
+}
 
-    .slide
-        &.item-1
+.peek {
+    background-color: purple;
+    height: 420px;
+    transition: transform 500ms ease-out;
+    transform: translate3d(0, 0, 0);
+    white-space: nowrap;
+}
+
+.slide {
+    float: left;
+	display: block;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+
+    &.item-1 {
+        background-color red
+    }
+
+    &.item-2 {
+        background-color orange
+    }
+
+    &.item-3 {
+        background-color yellow
+    }
+
+    &.item-4 {
+        background-color green
+    }
+
+    &.item-5 {
+        background-color blue
+    }
+}
+
+.peek-dots
+    width 100%
+    padding 40px 0
+    background pink
+    text-align center
+
+    .peek-dot
+        display inline-block
+        position relative
+        width 26px
+        height 26px
+        margin 0 5px
+        background-color black
+        border-radius 50%
+        cursor pointer
+
+        &::before,
+        &::after
+            content ''
+            display block
+            position absolute
+            top 10%
+            left 10%
+            width 80%
+            height 80%
             background-color red
-
-        &.item-2
-            background-color orange
-
-        &.item-3
-            background-color yellow
-
-        &.item-4
-            background-color green
-
-        &.item-5
-            background-color blue
+            border-radius 50%
