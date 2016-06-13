@@ -25,6 +25,11 @@
   margin: 0;
   padding: 0;
   height: 100%;
+  -webkit-transition: -webkit-transform 400ms ease-out;
+  -moz-transition: -moz-transform 400ms ease-out;
+  -o-transition: -o-transform 400ms ease-out;
+  -ms-transition: -ms-transform 400ms ease-out;
+  transition: transform 400ms ease-out;
 }
 .slide.item-1 {
   background-color: #f00;
@@ -64,9 +69,9 @@
   display: block;
   position: absolute;
   top: 10%;
-  left: 10%;
   width: 80%;
   height: 80%;
+  left: 10%;
   background-color: #f00;
   -webkit-border-radius: 50%;
   border-radius: 50%;

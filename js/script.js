@@ -1,7 +1,10 @@
+//TODO: easing func for huge steps
+//TODO: prev/next
+
 ;(function(window, document){
     'use strict';
 
-    document.addEventListener('DOMContentLoaded', function(){
+    document.addEventListener('DOMContentLoaded', function(ev){
         let peek = _Peek(document.querySelector('.peek'));
         peek.init();
     });
@@ -19,14 +22,15 @@
 
         function init() {
             //TODO: if more than 1 slide, trigger
-
             slider.style.width = 100 * slidesCount + '%';
 
             slides.forEach(function(slide){
                 slide.style.width = 100 / slidesCount + '%';
             });
 
-            createPeekDots();
+            if ( slidesCount > 1 ) {
+                createPeekDots();
+            }
 
             let dotNav = document.querySelector('.peek-dots');
 
@@ -34,26 +38,38 @@
                 ev.preventDefault();
 
                 let targetDot = ev.target,
+                    //get children
                     dots      = _getChildren( this ),
+                    //get index of dots
                     dotIndex  = [].indexOf.call(dots, targetDot);
 
                 if ( targetDot === this) return;
 
-                gotoSlide(dotIndex);
+                //pass the dot index
+                gotoSlide(dotIndex, slider);
             });
         }
 
         //slide functionality
-        function slide() {
+        function slide(slider) {
+    		let translateVal = -1 * currentIndex * 100 / slidesCount,
+                theSlider    = slider;
 
+            theSlider.style.transform = 'translate3d(' + translateVal + '%, 0, 0)';
         }
 
         //dot index
-        function gotoSlide( index ) {
+        function gotoSlide( index, slider ) {
+            if ( index === currentIndex ) {
+                console.log('is current');
+            }
+
             //pass currentIndex to lastIndex
             lastIndex = currentIndex;
             //pass the clicked index into currentIndex
 			currentIndex = index;
+
+            slide(slider);
         }
 
 
