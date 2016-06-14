@@ -1,5 +1,6 @@
 //TODO: easing func for huge steps
-//TODO: prev/next
+//TODO: prev/next func
+//TODO: underscore funcs[
 
 ;(function(window, document){
     'use strict';
@@ -19,20 +20,30 @@
             currentIndex = 0,
             lastIndex    = 0;
 
+        let transitionPrefix = {
+            'WebkitTransition':'webkitTransitionEnd',
+            'MozTransition':'transitionend',
+            'OTransition':'oTransitionEnd',
+            'transition':'transitionend'
+        };
 
         function init() {
-            //TODO: if more than 1 slide, trigger
+            //apply slider width
             slider.style.width = 100 * slidesCount + '%';
 
+            //apply slide width
             slides.forEach(function(slide){
                 slide.style.width = 100 / slidesCount + '%';
             });
 
+            //create dot nav if more than 1 slide
             if ( slidesCount > 1 ) {
                 createPeekDots();
+                createPrevNextBtn();
             }
 
             let dotNav = document.querySelector('.peek-dots');
+
 
             dotNav.addEventListener('click', function(ev){
                 ev.preventDefault();
@@ -58,6 +69,12 @@
             theSlider.style.transform = 'translate3d(' + translateVal + '%, 0, 0)';
         }
 
+
+        //handle forward previous slide
+        function prevNext() {
+
+        }
+
         //dot index
         function gotoSlide( index, slider ) {
             if ( index === currentIndex ) {
@@ -73,28 +90,61 @@
         }
 
 
+        //TODO: refactor
         //create the dot navigation elements and append
         function createPeekDots () {
             let frag   = document.createDocumentFragment(),
-                dotNav = document.createElement('nav'),
-                anchor;
+                anchor = document.createElement('a'),
+                dotNav = _createElement('nav', {
+                    className : 'peek-dots'
+                }),
+                i = 0;
 
-            for ( let i = 0; i < slidesCount; i += 1 ) {
+            for ( i ; i < slidesCount; i += 1 ) {
                 anchor = document.createElement('a');
                 anchor.className = ( i === currentIndex ) ? 'peek-dot dot-current': 'peek-dot';
-
-                dotNav.appendChild(anchor);
+                dotNav.appendChild(anchor.cloneNode(false));
             }
 
-            dotNav.className = 'peek-dots';
-
-            frag.appendChild(dotNav);
-            slider.parentNode.appendChild(frag);
+            slider.parentNode.appendChild( frag.appendChild(dotNav) );
         }
 
 
-        //createElement w/ opt to shorten element creation process
-        function _createElement() {
+        function createPrevNextBtn() {
+            let frag = elementFrag(
+                    _createElement('nav', {
+                        className : 'slide-btn-nav'
+                    })
+                ),
+
+                prevBtn   = _createElement('a', {
+                    className : 'prev-btn'
+                }),
+
+                nextBtn   = _createElement('a', {
+                    className : 'next-btn'
+                });
+
+            frag.appendChild(prevBtn);
+            frag.appendChild(nextBtn);
+            slider.parentNode.appendChild( frag );
+        }
+
+
+        function elementFrag(element) {
+            let frag = document.createDocumentFragment();
+            return frag.appendChild( element );
+        }
+
+
+        function _createElement(tag, option) {
+        	let element = document.createElement(tag);
+
+        	if (option) {
+        		if (option.className) element.className = option.className;
+        	}
+
+        	return element;
         }
 
 
