@@ -76,5 +76,25 @@
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+.slide-btn-nav {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 80px);
+  top: 40px;
+}
+.slide-btn-nav a {
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 15%;
+  height: 100%;
+  cursor: pointer;
+}
+.slide-btn-nav a.prev-btn {
+  left: 0;
+}
+.slide-btn-nav a.next-btn {
+  right: 0;
+}
 
 /*# sourceMappingURL=style.css.map */

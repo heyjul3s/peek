@@ -1,6 +1,3 @@
-//TODO: easing func for huge steps
-//TODO: prev/next func
-//TODO: underscore funcs[
 
 ;(function(window, document){
     'use strict';
@@ -13,6 +10,7 @@
     //needs default parameters
     function _Peek(element) {
 
+
         //vars
         let slider       = element,
             slides       = Array.from(element.querySelectorAll('.slide')),
@@ -20,12 +18,6 @@
             currentIndex = 0,
             lastIndex    = 0;
 
-        let transitionPrefix = {
-            'WebkitTransition':'webkitTransitionEnd',
-            'MozTransition':'transitionend',
-            'OTransition':'oTransitionEnd',
-            'transition':'transitionend'
-        };
 
         function init() {
             //apply slider width
@@ -36,14 +28,14 @@
                 slide.style.width = 100 / slidesCount + '%';
             });
 
-            //create dot nav if more than 1 slide
+            //create dot nav and prev/button if more than 1 slide
             if ( slidesCount > 1 ) {
-                createPeekDots();
-                createPrevNextBtn();
+                _createPeekDots();
+                _createPrevNextBtn();
             }
 
-            let dotNav = document.querySelector('.peek-dots');
-
+            let dotNav      = document.querySelector('.peek-dots'),
+                slideBtnNav = document.querySelector('.slide-btn-nav');
 
             dotNav.addEventListener('click', function(ev){
                 ev.preventDefault();
@@ -57,12 +49,23 @@
                 if ( targetDot === this) return;
 
                 //pass the dot index
-                gotoSlide(dotIndex, slider);
+                _gotoSlide(dotIndex, slider);
+            });
+
+            //pass data
+            slideBtnNav.addEventListener('click', function(ev) {
+                ev.preventDefault();
+
+                let targetBtn      = ev.target,
+                    slideDirection = targetBtn.dataset.direction;
+
+                _prevNext(slideDirection);
             });
         }
 
+
         //slide functionality
-        function slide(slider) {
+        function _slide(slider) {
     		let translateVal = -1 * currentIndex * 100 / slidesCount,
                 theSlider    = slider;
 
@@ -70,13 +73,24 @@
         }
 
 
-        //handle forward previous slide
-        function prevNext() {
+        //TODO: if end of slides
+        function _prevNext(slideDirection) {
 
+            lastIndex = currentIndex;
+
+            if ( slideDirection === 'next' && currentIndex < slidesCount - 1 ) {
+                currentIndex += 1;
+            } else if ( slideDirection === 'previous' && currentIndex > 0 ) {
+                currentIndex -= 1;
+            }
+
+            _slide(slider);
         }
 
+
         //dot index
-        function gotoSlide( index, slider ) {
+        function _gotoSlide( index, slider ) {
+
             if ( index === currentIndex ) {
                 console.log('is current');
             }
@@ -86,13 +100,14 @@
             //pass the clicked index into currentIndex
 			currentIndex = index;
 
-            slide(slider);
+            _slide(slider);
         }
 
 
         //TODO: refactor
         //create the dot navigation elements and append
-        function createPeekDots () {
+        function _createPeekDots () {
+
             let frag   = document.createDocumentFragment(),
                 anchor = document.createElement('a'),
                 dotNav = _createElement('nav', {
@@ -110,19 +125,28 @@
         }
 
 
-        function createPrevNextBtn() {
-            let frag = elementFrag(
+        function _createPrevNextBtn() {
+
+            let frag = _elementFrag(
                     _createElement('nav', {
                         className : 'slide-btn-nav'
                     })
                 ),
 
                 prevBtn   = _createElement('a', {
-                    className : 'prev-btn'
+                    className : 'prev-btn',
+                    setAttribute : {
+                        'data'  : 'data-direction',
+                        'value' : 'previous'
+                    }
                 }),
 
                 nextBtn   = _createElement('a', {
-                    className : 'next-btn'
+                    className : 'next-btn',
+                    setAttribute : {
+                        'data'  : 'data-direction',
+                        'value' : 'next'
+                    }
                 });
 
             frag.appendChild(prevBtn);
@@ -131,17 +155,20 @@
         }
 
 
-        function elementFrag(element) {
+        function _elementFrag(element) {
             let frag = document.createDocumentFragment();
             return frag.appendChild( element );
         }
 
 
+        //TODO: attribute setter
         function _createElement(tag, option) {
+
         	let element = document.createElement(tag);
 
         	if (option) {
-        		if (option.className) element.className = option.className;
+        		if ( option.className ) element.className = option.className;
+                if ( option.setAttribute ) element.setAttribute(option.setAttribute.data, option.setAttribute.value);
         	}
 
         	return element;
@@ -150,6 +177,7 @@
 
         //get the parent element's children
         function _getChildren(element) {
+
             let i = 0,
                 children = [],
                 childrenNodes = element.childNodes,
