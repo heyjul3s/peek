@@ -1,86 +1,98 @@
+//TODO: ensure when animating, no other events to interfere
 
 ;(function(window, document){
     'use strict';
 
     document.addEventListener('DOMContentLoaded', function(ev){
-        let peek = _Peek(document.querySelector('.peek'));
+        let peek = _Peek( document.querySelector('.peek') );
         peek.init();
     });
 
     function _Peek(element) {
 
-        //vars
         let slider       = element,
             slides       = Array.from(element.querySelectorAll('.slide')),
             slidesCount  = slides.length,
             currentIndex = 0,
-            lastIndex    = 0;
+            lastIndex    = 0,
+            slideBtnNav,
+            dotNav,
+            dots;
+
+
+        //transitionend prefix
+        let transitionEndPrefixes = {
+            'WebkitTransition' : 'webkitTransitionEnd',
+               'MozTransition' : 'transitionend',
+                'msTransition' : 'MSTransitionEnd',
+                 'OTransition' : 'oTransitionEnd',
+                  'transition' : 'transitionend'
+        };
 
 
         function init() {
-            //apply slider width
-            slider.style.width = 100 * slidesCount + '%';
-
-            //apply slide width
-            slides.forEach(function(slide){
-                slide.style.width = 100 / slidesCount + '%';
-            });
-
             //create dot nav and prev/button if more than 1 slide
             if ( slidesCount > 1 ) {
-                _createPeekDots();
-                _createPrevNextBtn();
+                _createNavElements();
             }
 
-            let dotNav      = document.querySelector('.peek-dots'),
-                slideBtnNav = document.querySelector('.slide-btn-nav');
+            dotNav      = document.querySelector('.peek-dots');
+            dots        = _getChildren(dotNav);
+            slideBtnNav = document.querySelector('.slide-btn-nav');
 
             dotNav.addEventListener('click', function(ev){
+
                 ev.preventDefault();
 
                 let targetDot = ev.target,
-                    //get children
-                    dots      = _getChildren( this ),
-                    //get index of dots
                     dotIndex  = [].indexOf.call(dots, targetDot);
 
                 if ( targetDot === this) return;
 
-                //pass the dot index
-                _gotoSlide(dotIndex, slider, dots);
+                _gotoSlide(dotIndex, dots);
             });
 
-            //pass the data
             slideBtnNav.addEventListener('click', function(ev) {
+
                 ev.preventDefault();
 
                 let targetBtn      = ev.target,
                     slideDirection = targetBtn.dataset.direction;
 
-                _prevNext(slideDirection);
+                if ( targetBtn === this) return;
+
+                _slideToDirection( slideDirection, slides, dots );
             });
         }
 
 
         /**
-         * animates the slider element
-         * @param  {element} slider : main container of slides
+         * Create all the necessary navigational elements
          * @return
          */
-        function _slide(slider) {
-    		let translateVal = -1 * currentIndex * 100 / slidesCount,
-                theSlider    = slider;
+        function _createNavElements() {
+            _createPeekDots();
+            _createPrevNextBtn();
+        }
 
-            theSlider.style.transform = 'translate3d(' + translateVal + '%, 0, 0)';
+
+        function _gotoSlide( index, dots ) {
+
+            if ( index === currentIndex ) return false;
+
+            lastIndex    = currentIndex;
+            currentIndex = index;
+
+            _slide( slides, dots );
         }
 
 
         /**
-         * controls direction of content slide
-         * @param  {[string]} slideDirection : data attribute acquired from slider nav buttons
-         * @return
+         * Determine which nav button and slide
+         * @param  {[type]} slideDirection [description]
+         * @return {[type]}                [description]
          */
-        function _prevNext(slideDirection) {
+        function _slideToDirection( slideDirection, slides, dots ) {
 
             lastIndex = currentIndex;
 
@@ -90,34 +102,90 @@
                 currentIndex -= 1;
             }
 
-            //initate slide functionality
-            _slide(slider);
+            _slide( slides, dots );
         }
 
 
-        //dot index
-        function _gotoSlide( index, slider, dots ) {
+        function _slide( slides, dots ) {
 
-            //don't do anything if is the current dot
-            if ( index === currentIndex ) {
-                return false;
+            let slideHandler  = _currentElementClassHandler.bind( null, slides, 'selected' ),
+                dotNavHandler = _currentElementClassHandler.bind( null, dots, 'dot-current' );
+
+            slideHandler( _getElementIndexes(lastIndex, currentIndex) );
+            dotNavHandler( _getElementIndexes(lastIndex, currentIndex) );
+        }
+
+
+        /**
+         * Class swapping helper to remove designated class from previous element
+         * and add to new element
+         * @param  {[type]} lastElement
+         * @param  {[type]} currentElement
+         * @param  {[ string ]} klassName      : class name to be modified
+         * @return
+         */
+
+        //TODO: string check and trim
+        function _currentElementClassHandler( element, klassname, indexes ) {
+
+            let [ lastIndex, currentIndex ] = indexes;
+
+            _setCurrentIndexElementClass( element[lastIndex], element[currentIndex], klassname);
+        }
+
+
+        function _getElementIndexes( lastIndex, currentIndex ) {
+
+            let indexes = [];
+
+            //TODO: additional helper funcs for arg checks
+            if ( typeof lastIndex !== 'undefined' && typeof currentIndex !== 'undefined' ) {
+                indexes.push(lastIndex, currentIndex);
             }
 
-            //pass currentIndex to lastIndex
-            lastIndex = currentIndex;
-            //pass the clicked index into currentIndex
-			currentIndex = index;
+            return indexes;
+        }
 
-            if ( dots[lastIndex].classList.contains('dot-current') ) {
-                dots[lastIndex].classList.remove('dot-current');
+
+        /**
+         * Handles slide classes for slide functionality
+         * @param  {[type]} targetSlide [description]
+         * @return {[type]}             [description]
+         */
+        function _setCurrentIndexElementClass( lastSelected, currentSelected, klassname ) {
+
+            if ( !currentSelected.classList.contains(klassname) ) {
+                currentSelected.classList.add(klassname);
+                _removeLastIndexElementClass(lastSelected, currentSelected, klassname);
             }
+        }
 
-            if ( !dots[currentIndex].classList.contains('dot-current') ) {
-                dots[currentIndex].classList.add('dot-current');
+
+        /**
+         * Used in lieu with _setCurrentIndexElementClass() to remove previous element class
+         * @param  {[type]} targetSlide [description]
+         * @return {[type]}             [description]
+         */
+        function _removeLastIndexElementClass( lastSelected, currentSelected, klassname ) {
+
+            currentSelected.addEventListener( _applyTransitionEndPrefix(currentSelected), function(){
+                if ( lastSelected.classList.contains(klassname) ) {
+                    lastSelected.classList.remove(klassname);
+                }
+            });
+        }
+
+
+        function _applyTransitionEndPrefix( element ) {
+
+            let transition;
+
+            //TODO: possibly a better method to do this
+            for (transition in transitionEndPrefixes) {
+              if ( element.style[transition] !== undefined ) {
+                return transitionEndPrefixes[transition];
+              }
             }
-
-            //initate slide functionality
-            _slide(slider);
         }
 
 
@@ -125,7 +193,7 @@
          * creates the dot navigation elements
          * @return
          */
-        function _createPeekDots () {
+        function _createPeekDots() {
 
             let frag   = document.createDocumentFragment(),
                 anchor = document.createElement('a'),
@@ -211,7 +279,6 @@
         }
 
 
-        //
         /**
          * get the parent element's children
          * @param  {[type]} element : target element
