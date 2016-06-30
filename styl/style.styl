@@ -8,7 +8,6 @@
 
 
 .peek {
-    background-color: purple;
     height: 420px;
     transition: transform 500ms ease-out;
     transform: translate3d(0, 0, 0);
@@ -51,12 +50,10 @@
 }
 
 .peek-dots
-    position relative
     width 100%
     padding 40px 0
     background pink
     text-align center
-    z-index 1
 
     .peek-dot
         display inline-block
@@ -68,8 +65,8 @@
         border-radius 50%
         cursor pointer
 
-        transform scale(1)
-        transition transform 200ms ease-out
+        transform scale(1.2)
+        t
 
         &::before,
         &::after
@@ -87,6 +84,7 @@
             transform scale(1.2)
 
 .slide-btn-nav
+    display none
     position absolute
     width 100%
     height calc(100% - 80px)

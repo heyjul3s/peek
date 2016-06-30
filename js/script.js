@@ -15,6 +15,7 @@
             slidesCount  = slides.length,
             currentIndex = 0,
             lastIndex    = 0,
+            isAnimating  = false,
             slideBtnNav,
             dotNav,
             dots;
@@ -60,6 +61,7 @@
                     slideDirection = targetBtn.dataset.direction;
 
                 if ( targetBtn === this) return;
+
 
                 _slideToDirection( slideDirection, slides, dots );
             });
@@ -107,43 +109,8 @@
 
 
         function _slide( slides, dots ) {
-
-            let slideHandler  = _currentElementClassHandler.bind( null, slides, 'selected' ),
-                dotNavHandler = _currentElementClassHandler.bind( null, dots, 'dot-current' );
-
-            slideHandler( _getElementIndexes(lastIndex, currentIndex) );
-            dotNavHandler( _getElementIndexes(lastIndex, currentIndex) );
-        }
-
-
-        /**
-         * Class swapping helper to remove designated class from previous element
-         * and add to new element
-         * @param  {[type]} lastElement
-         * @param  {[type]} currentElement
-         * @param  {[ string ]} klassName      : class name to be modified
-         * @return
-         */
-
-        //TODO: string check and trim
-        function _currentElementClassHandler( element, klassname, indexes ) {
-
-            let [ lastIndex, currentIndex ] = indexes;
-
-            _setCurrentIndexElementClass( element[lastIndex], element[currentIndex], klassname);
-        }
-
-
-        function _getElementIndexes( lastIndex, currentIndex ) {
-
-            let indexes = [];
-
-            //TODO: additional helper funcs for arg checks
-            if ( typeof lastIndex !== 'undefined' && typeof currentIndex !== 'undefined' ) {
-                indexes.push(lastIndex, currentIndex);
-            }
-
-            return indexes;
+            _setCurrentIndexElementClass( slides[lastIndex], slides[currentIndex], 'selected' );
+            // _setCurrentIndexElementClass( dots[lastIndex], dots[currentIndex], 'dot-current' );
         }
 
 
@@ -153,11 +120,24 @@
          * @return {[type]}             [description]
          */
         function _setCurrentIndexElementClass( lastSelected, currentSelected, klassname ) {
-
             if ( !currentSelected.classList.contains(klassname) ) {
                 currentSelected.classList.add(klassname);
-                _removeLastIndexElementClass(lastSelected, currentSelected, klassname);
+                currentSelected.classList.add('animating');
+
+                currentSelected.addEventListener( _applyTransitionEndPrefix(currentSelected), function callback(ev) {
+                    if ( ev.propertyName === 'transform' && currentSelected.classList.contains('animating') ) {
+                        currentSelected.classList.remove('animating');
+                    }
+
+                    if ( lastSelected.classList.contains(klassname) && !currentSelected.classList.contains('animating') ) {
+                        lastSelected.classList.remove(klassname);
+                        currentSelected.removeEventListener( _applyTransitionEndPrefix(currentSelected), callback, false );
+                    }
+                });
+
+                // _removeLastIndexElementClass(lastSelected, currentSelected, klassname);
             }
+
         }
 
 
@@ -167,12 +147,6 @@
          * @return {[type]}             [description]
          */
         function _removeLastIndexElementClass( lastSelected, currentSelected, klassname ) {
-
-            currentSelected.addEventListener( _applyTransitionEndPrefix(currentSelected), function(){
-                if ( lastSelected.classList.contains(klassname) ) {
-                    lastSelected.classList.remove(klassname);
-                }
-            });
         }
 
 
