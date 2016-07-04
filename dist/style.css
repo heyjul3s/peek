@@ -2,7 +2,6 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding: 40px 0;
 }
 .peek {
   height: 420px;
@@ -40,7 +39,7 @@
   width: 100%;
 }
 .slide.item-1 {
-  background-color: #f00;
+  background-color: #ff69b4;
 }
 .slide.item-2 {
   background-color: #ffa500;
@@ -55,28 +54,30 @@
   background-color: #00f;
 }
 .peek-dots {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
   padding: 40px 0;
-  background: #ffc0cb;
   text-align: center;
+  z-index: 1;
 }
 .peek-dots .peek-dot {
   display: inline-block;
   position: relative;
-  width: 26px;
-  height: 26px;
+  width: 12px;
+  height: 12px;
   margin: 0 5px;
   background-color: #000;
   -webkit-border-radius: 50%;
   border-radius: 50%;
   cursor: pointer;
-  -webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -o-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-  transform: scale(1.2);
+  -webkit-transition: -webkit-transform 300ms ease-out;
+  -moz-transition: -moz-transform 300ms ease-out;
+  -o-transition: -o-transform 300ms ease-out;
+  -ms-transition: -ms-transform 300ms ease-out;
+  transition: transform 300ms ease-out;
 }
-.peek-dots .peek-dot t,
 .peek-dots .peek-dot::before,
 .peek-dots .peek-dot::after {
   content: '';
@@ -86,19 +87,18 @@
   width: 80%;
   height: 80%;
   left: 10%;
-  background-color: #f00;
+  background-color: #fff;
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
 .peek-dots .peek-dot.dot-current {
-  -webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -o-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-  transform: scale(1.2);
+  -webkit-transform: scale(1.4);
+  -moz-transform: scale(1.4);
+  -o-transform: scale(1.4);
+  -ms-transform: scale(1.4);
+  transform: scale(1.4);
 }
 .slide-btn-nav {
-  display: none;
   position: absolute;
   width: 100%;
   height: calc(100% - 80px);
@@ -107,16 +107,68 @@
 .slide-btn-nav a {
   display: block;
   position: absolute;
-  top: 0;
-  width: 15%;
-  height: 100%;
+  top: calc(50% - 40px);
+  width: 80px;
+  height: 80px;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  background: #ffc0cb;
   cursor: pointer;
 }
+.slide-btn-nav a::before,
+.slide-btn-nav a::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 20px;
+  height: 4px;
+  background-color: #fff;
+}
 .slide-btn-nav a.prev-btn {
-  left: 0;
+  left: -40px;
+}
+.slide-btn-nav a.prev-btn::before,
+.slide-btn-nav a.prev-btn::after {
+  left: calc(50% + 5px);
+}
+.slide-btn-nav a.prev-btn::before {
+  top: calc(50% - 8px);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.slide-btn-nav a.prev-btn::after {
+  top: calc(50% + 4px);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .slide-btn-nav a.next-btn {
-  right: 0;
+  right: -40px;
+}
+.slide-btn-nav a.next-btn::before,
+.slide-btn-nav a.next-btn::after {
+  right: calc(50% + 5px);
+}
+.slide-btn-nav a.next-btn::before {
+  top: calc(50% - 8px);
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.slide-btn-nav a.next-btn::after {
+  top: calc(50% + 4px);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 .selected {
   -webkit-transform: translateX(0);

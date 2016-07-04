@@ -1,5 +1,3 @@
-//TODO: ensure when animating, no other events to interfere
-
 ;(function(window, document){
     'use strict';
 
@@ -15,7 +13,6 @@
             slidesCount  = slides.length,
             currentIndex = 0,
             lastIndex    = 0,
-            isAnimating  = false,
             slideBtnNav,
             dotNav,
             dots;
@@ -79,7 +76,6 @@
 
 
         function _gotoSlide( index, dots ) {
-
             if ( index === currentIndex ) return false;
 
             lastIndex    = currentIndex;
@@ -104,13 +100,14 @@
                 currentIndex -= 1;
             }
 
+            // _slide( slides, 'selected' );
             _slide( slides, dots );
         }
 
 
         function _slide( slides, dots ) {
             _setCurrentIndexElementClass( slides[lastIndex], slides[currentIndex], 'selected' );
-            // _setCurrentIndexElementClass( dots[lastIndex], dots[currentIndex], 'dot-current' );
+            _setCurrentIndexElementClass( dots[lastIndex], dots[currentIndex], 'dot-current' );
         }
 
 
@@ -124,18 +121,7 @@
                 currentSelected.classList.add(klassname);
                 currentSelected.classList.add('animating');
 
-                currentSelected.addEventListener( _applyTransitionEndPrefix(currentSelected), function callback(ev) {
-                    if ( ev.propertyName === 'transform' && currentSelected.classList.contains('animating') ) {
-                        currentSelected.classList.remove('animating');
-                    }
-
-                    if ( lastSelected.classList.contains(klassname) && !currentSelected.classList.contains('animating') ) {
-                        lastSelected.classList.remove(klassname);
-                        currentSelected.removeEventListener( _applyTransitionEndPrefix(currentSelected), callback, false );
-                    }
-                });
-
-                // _removeLastIndexElementClass(lastSelected, currentSelected, klassname);
+                _removeLastIndexElementClass(lastSelected, currentSelected, klassname);
             }
 
         }
@@ -143,10 +129,21 @@
 
         /**
          * Used in lieu with _setCurrentIndexElementClass() to remove previous element class
+         * and then halt transitionend events by removing it
          * @param  {[type]} targetSlide [description]
          * @return {[type]}             [description]
          */
         function _removeLastIndexElementClass( lastSelected, currentSelected, klassname ) {
+            currentSelected.addEventListener( _applyTransitionEndPrefix(currentSelected), function callback(ev) {
+                if ( ev.propertyName === 'transform' && currentSelected.classList.contains('animating') ) {
+                    currentSelected.classList.remove('animating');
+                }
+
+                if ( lastSelected.classList.contains(klassname) && !currentSelected.classList.contains('animating') ) {
+                    lastSelected.classList.remove(klassname);
+                    currentSelected.removeEventListener( _applyTransitionEndPrefix(currentSelected), callback, false );
+                }
+            });
         }
 
 

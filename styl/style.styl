@@ -3,7 +3,6 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    padding: 40px 0;
 }
 
 
@@ -29,7 +28,7 @@
     width 100%
 
     &.item-1 {
-        background-color red
+        background-color hotpink
     }
 
     &.item-2 {
@@ -50,23 +49,24 @@
 }
 
 .peek-dots
+    position absolute
+    bottom 0
+    left 0
     width 100%
     padding 40px 0
-    background pink
     text-align center
+    z-index 1
 
     .peek-dot
         display inline-block
         position relative
-        width 26px
-        height 26px
+        width 12px
+        height 12px
         margin 0 5px
         background-color black
         border-radius 50%
         cursor pointer
-
-        transform scale(1.2)
-        t
+        transition transform 300ms ease-out
 
         &::before,
         &::after
@@ -77,14 +77,13 @@
             width 80%
             height 80%
             left 10%
-            background-color red
+            background-color white
             border-radius 50%
 
         &.dot-current
-            transform scale(1.2)
+            transform scale(1.4)
 
 .slide-btn-nav
-    display none
     position absolute
     width 100%
     height calc(100% - 80px)
@@ -93,16 +92,52 @@
     a
         display block
         position absolute
-        top 0
-        width 15%
-        height 100%
+        top calc(50% - 40px)
+        width 80px
+        height 80px
+        border-radius 50%
+        background pink
         cursor pointer
 
+        &::before,
+        &::after
+            content ''
+            display block
+            position absolute
+
+            width 20px
+            height 4px
+            background-color white
+
         &.prev-btn
-            left 0
+            left -40px
+
+            &::before,
+            &::after
+                left calc(50% + 5px)
+
+            &::before
+                top calc(50% - 8px)
+                transform rotate(-45deg)
+
+            &::after
+                top calc(50% + 4px)
+                transform rotate(45deg)
 
         &.next-btn
-            right 0
+            right -40px
+
+            &::before,
+            &::after
+                right calc(50% + 5px)
+
+            &::before
+                top calc(50% - 8px)
+                transform rotate(45deg)
+
+            &::after
+                top calc(50% + 4px)
+                transform rotate(-45deg)
 
 
 .selected
