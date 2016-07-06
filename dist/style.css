@@ -1,10 +1,14 @@
+body {
+  margin: 0;
+}
 .peek-container {
   position: relative;
   width: 100%;
+  height: 100vh;
   overflow: hidden;
 }
 .peek {
-  height: 420px;
+  height: 100%;
   -webkit-transition: -webkit-transform 500ms ease-out;
   -moz-transition: -moz-transform 500ms ease-out;
   -o-transition: -o-transform 500ms ease-out;
@@ -18,28 +22,33 @@
   white-space: nowrap;
 }
 .slide {
-  float: left;
   display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100%;
-  -webkit-transition: -webkit-transform 400ms ease-out;
-  -moz-transition: -moz-transform 400ms ease-out;
-  -o-transition: -o-transform 400ms ease-out;
-  -ms-transition: -ms-transform 400ms ease-out;
-  transition: transform 400ms ease-out;
+  -webkit-transition: -webkit-transform 400ms ease-out, opacity 500ms ease-out;
+  -moz-transition: -moz-transform 400ms ease-out, opacity 500ms ease-out;
+  -o-transition: -o-transform 400ms ease-out, opacity 500ms ease-out;
+  -ms-transition: -ms-transform 400ms ease-out, opacity 500ms ease-out;
+  transition: transform 400ms ease-out, opacity 500ms ease-out;
   -webkit-transform: translateX(100%);
   -moz-transform: translateX(100%);
   -o-transform: translateX(100%);
   -ms-transform: translateX(100%);
   transform: translateX(100%);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
 }
 .slide.item-1 {
-  background-color: #ff69b4;
+  background: #ff69b4 url("../assets/images/birdcage.jpg") 50% 50% no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
 }
 .slide.item-2 {
   background-color: #ffa500;
@@ -53,22 +62,44 @@
 .slide.item-5 {
   background-color: #00f;
 }
+.slide .slide-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(150%, -50%);
+  -moz-transform: translate(150%, -50%);
+  -o-transform: translate(150%, -50%);
+  -ms-transform: translate(150%, -50%);
+  transform: translate(150%, -50%);
+  text-align: center;
+  -webkit-transition: -webkit-transform 800ms ease-out, opacity 800ms ease-out;
+  -moz-transition: -moz-transform 800ms ease-out, opacity 800ms ease-out;
+  -o-transition: -o-transform 800ms ease-out, opacity 800ms ease-out;
+  -ms-transition: -ms-transform 800ms ease-out, opacity 800ms ease-out;
+  transition: transform 800ms ease-out, opacity 800ms ease-out;
+}
+.slide .slide-content h1 {
+  margin: 0;
+  font-weight: bold;
+}
+.slide .slide-content p {
+  line-height: 1;
+}
 .peek-dots {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 40px 0;
+  padding: 60px 0;
   text-align: center;
   z-index: 1;
 }
 .peek-dots .peek-dot {
   display: inline-block;
   position: relative;
-  width: 12px;
-  height: 12px;
-  margin: 0 5px;
-  background-color: #000;
+  width: 16px;
+  height: 16px;
+  margin: 0 10px;
   -webkit-border-radius: 50%;
   border-radius: 50%;
   cursor: pointer;
@@ -83,20 +114,43 @@
   content: '';
   display: block;
   position: absolute;
-  top: 10%;
-  width: 80%;
-  height: 80%;
-  left: 10%;
-  background-color: #fff;
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+.peek-dots .peek-dot::before {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+  -webkit-transition: opacity 300ms ease-out;
+  -moz-transition: opacity 300ms ease-out;
+  -o-transition: opacity 300ms ease-out;
+  -ms-transition: opacity 300ms ease-out;
+  transition: opacity 300ms ease-out;
+}
+.peek-dots .peek-dot::after {
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  background-color: #fff;
+  -webkit-box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
+  box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
+}
 .peek-dots .peek-dot.dot-current {
-  -webkit-transform: scale(1.4);
-  -moz-transform: scale(1.4);
-  -o-transform: scale(1.4);
-  -ms-transform: scale(1.4);
-  transform: scale(1.4);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -o-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+}
+.peek-dots .peek-dot.dot-current::before {
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
 }
 .slide-btn-nav {
   position: absolute;
@@ -112,7 +166,6 @@
   height: 80px;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-  background: #ffc0cb;
   cursor: pointer;
 }
 .slide-btn-nav a::before,
@@ -123,13 +176,15 @@
   width: 20px;
   height: 4px;
   background-color: #fff;
+  -webkit-box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
+  box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
 }
 .slide-btn-nav a.prev-btn {
-  left: -40px;
+  left: 40px;
 }
 .slide-btn-nav a.prev-btn::before,
 .slide-btn-nav a.prev-btn::after {
-  left: calc(50% + 5px);
+  left: calc(50% - 10px);
 }
 .slide-btn-nav a.prev-btn::before {
   top: calc(50% - 8px);
@@ -148,11 +203,11 @@
   transform: rotate(45deg);
 }
 .slide-btn-nav a.next-btn {
-  right: -40px;
+  right: 40px;
 }
 .slide-btn-nav a.next-btn::before,
 .slide-btn-nav a.next-btn::after {
-  right: calc(50% + 5px);
+  right: calc(50% - 10px);
 }
 .slide-btn-nav a.next-btn::before {
   top: calc(50% - 8px);
@@ -176,6 +231,24 @@
   -o-transform: translateX(0);
   -ms-transform: translateX(0);
   transform: translateX(0);
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+}
+.selected .slide-content {
+  -webkit-transition-delay: 300ms;
+  -moz-transition-delay: 300ms;
+  -o-transition-delay: 300ms;
+  -ms-transition-delay: 300ms;
+  transition-delay: 300ms;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
 }
 
 /*# sourceMappingURL=style.css.map */

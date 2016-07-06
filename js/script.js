@@ -1,3 +1,5 @@
+// TODO: infinite scroll
+
 ;(function(window, document){
     'use strict';
 

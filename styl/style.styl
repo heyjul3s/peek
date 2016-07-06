@@ -1,34 +1,39 @@
+body
+    margin 0
+
 
 .peek-container {
     position: relative;
     width: 100%;
+    height 100vh
     overflow: hidden;
 }
 
-
 .peek {
-    height: 420px;
+    height 100%
+    // height: 420px;
     transition: transform 500ms ease-out;
     transform: translate3d(0, 0, 0);
     white-space: nowrap;
 }
 
 .slide {
-    float: left;
 	display: block;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    transition: transform 400ms ease-out;
-    transform translateX(100%)
-
     position absolute
     top 0
     left 0
     width 100%
+    height: 100%;
+    margin: 0;
+    padding: 0;
+
+    transition: transform 400ms ease-out, opacity 500ms ease-out;
+    transform translateX(100%)
+    opacity 0
 
     &.item-1 {
-        background-color hotpink
+        background hotpink url(../assets/images/birdcage.jpg) 50% 50% no-repeat
+        background-size cover
     }
 
     &.item-2 {
@@ -46,6 +51,25 @@
     &.item-5 {
         background-color blue
     }
+
+    .slide-content {
+        position absolute
+        top 50%
+        left 50%
+        transform translate(150%, -50%)
+        text-align center
+
+        transition transform 800ms ease-out, opacity 800ms ease-out
+
+        h1 {
+            margin 0
+            font-weight bold
+        }
+
+        p {
+            line-height 1
+        }
+    }
 }
 
 .peek-dots
@@ -53,19 +77,19 @@
     bottom 0
     left 0
     width 100%
-    padding 40px 0
+    padding 60px 0
     text-align center
     z-index 1
 
     .peek-dot
         display inline-block
         position relative
-        width 12px
-        height 12px
-        margin 0 5px
-        background-color black
+        width 16px
+        height 16px
+        margin 0 10px
         border-radius 50%
         cursor pointer
+
         transition transform 300ms ease-out
 
         &::before,
@@ -73,17 +97,32 @@
             content ''
             display block
             position absolute
-            top 10%
-            width 80%
-            height 80%
-            left 10%
-            background-color white
             border-radius 50%
 
+        &::before
+            top 0
+            left 0
+            width 100%
+            height 100%
+            opacity 0
+            transition opacity 300ms ease-out
+
+        &::after
+            top 10%
+            left 10%
+            width 80%
+            height 80%
+            background-color white
+            box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
+
         &.dot-current
-            transform scale(1.4)
+            transform scale(1.2)
+
+            &::before
+                opacity 1
 
 .slide-btn-nav
+    // display none
     position absolute
     width 100%
     height calc(100% - 80px)
@@ -96,7 +135,6 @@
         width 80px
         height 80px
         border-radius 50%
-        background pink
         cursor pointer
 
         &::before,
@@ -108,13 +146,14 @@
             width 20px
             height 4px
             background-color white
+            box-shadow: 1px 1px 10px 0 rgba(0, 0, 0, 0.05);
 
         &.prev-btn
-            left -40px
+            left 40px
 
             &::before,
             &::after
-                left calc(50% + 5px)
+                left calc(50% - 10px)
 
             &::before
                 top calc(50% - 8px)
@@ -125,11 +164,11 @@
                 transform rotate(45deg)
 
         &.next-btn
-            right -40px
+            right 40px
 
             &::before,
             &::after
-                right calc(50% + 5px)
+                right calc(50% - 10px)
 
             &::before
                 top calc(50% - 8px)
@@ -142,3 +181,9 @@
 
 .selected
     transform translateX(0)
+    opacity 1
+
+    .slide-content
+        transition-delay 300ms
+        transform translate(-50%, -50%)
+        opacity 1
