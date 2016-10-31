@@ -1,5 +1,3 @@
-// TODO: infinite scroll
-
 ;(function(window, document){
     'use strict';
 
@@ -100,9 +98,14 @@
                 currentIndex += 1;
             } else if ( slideDirection === 'previous' && currentIndex > 0 ) {
                 currentIndex -= 1;
+            // if at last slide, reset to first index
+            } else if ( slideDirection === 'next' && currentIndex > slidesCount - 2 ) {
+                currentIndex = 0;
+            // if at firt slide, set to last index
+            } else if ( slideDirection === 'previous' && currentIndex < slidesCount - 2 ) {
+                currentIndex =  slidesCount - 1;
             }
 
-            // _slide( slides, 'selected' );
             _slide( slides, dots );
         }
 
@@ -119,23 +122,25 @@
          * @return {[type]}             [description]
          */
         function _setCurrentIndexElementClass( lastSelected, currentSelected, klassname ) {
+
             if ( !currentSelected.classList.contains(klassname) ) {
                 currentSelected.classList.add(klassname);
                 currentSelected.classList.add('animating');
 
                 _removeLastIndexElementClass(lastSelected, currentSelected, klassname);
             }
-
         }
 
 
         /**
          * Used in lieu with _setCurrentIndexElementClass() to remove previous element class
-         * and then halt transitionend events by removing it
+         * and then halt transitionend events by removing it otherwise it will continue
+         * to run through every event
          * @param  {[type]} targetSlide [description]
          * @return {[type]}             [description]
          */
         function _removeLastIndexElementClass( lastSelected, currentSelected, klassname ) {
+
             currentSelected.addEventListener( _applyTransitionEndPrefix(currentSelected), function callback(ev) {
                 if ( ev.propertyName === 'transform' && currentSelected.classList.contains('animating') ) {
                     currentSelected.classList.remove('animating');
