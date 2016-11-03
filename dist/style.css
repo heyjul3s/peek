@@ -44,25 +44,9 @@ body {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
   filter: alpha(opacity=0);
 }
-.slide.item-1 {
-  background: #ff69b4 url("../assets/images/birdcage.jpg") 50% 50% no-repeat;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-}
-.slide.item-2 {
-  background-color: #ffa500;
-}
-.slide.item-3 {
-  background-color: #ff0;
-}
-.slide.item-4 {
-  background-color: #008000;
-}
-.slide.item-5 {
-  background-color: #00f;
-}
 .slide .slide-content {
+  display: block;
+  max-width: 65%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -77,6 +61,9 @@ body {
   -o-transition: -o-transform 800ms ease-out, opacity 800ms ease-out;
   -ms-transition: -ms-transform 800ms ease-out, opacity 800ms ease-out;
   transition: transform 800ms ease-out, opacity 800ms ease-out;
+  word-wrap: break-word;
+  white-space: normal;
+  color: #fff;
 }
 .slide .slide-content h1 {
   margin: 0;
@@ -103,11 +90,14 @@ body {
   -webkit-border-radius: 50%;
   border-radius: 50%;
   cursor: pointer;
-  -webkit-transition: -webkit-transform 300ms ease-out;
-  -moz-transition: -moz-transform 300ms ease-out;
-  -o-transition: -o-transform 300ms ease-out;
-  -ms-transition: -ms-transform 300ms ease-out;
-  transition: transform 300ms ease-out;
+  -webkit-transition: -webkit-transform 300ms ease-out, background-color 300ms ease-out;
+  -moz-transition: -moz-transform 300ms ease-out, background-color 300ms ease-out;
+  -o-transition: -o-transform 300ms ease-out, background-color 300ms ease-out;
+  -ms-transition: -ms-transform 300ms ease-out, background-color 300ms ease-out;
+  transition: transform 300ms ease-out, background-color 300ms ease-out;
+  background-color: rgba(0,0,0,0.25);
+  -webkit-box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
+  box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
 }
 .peek-dots .peek-dot::before,
 .peek-dots .peek-dot::after {
@@ -122,35 +112,89 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-  filter: alpha(opacity=0);
-  -webkit-transition: opacity 300ms ease-out;
-  -moz-transition: opacity 300ms ease-out;
-  -o-transition: opacity 300ms ease-out;
-  -ms-transition: opacity 300ms ease-out;
-  transition: opacity 300ms ease-out;
+  -webkit-box-shadow: inset 0 0 0 40px rgba(0,0,0,0.05);
+  box-shadow: inset 0 0 0 40px rgba(0,0,0,0.05);
+  -webkit-transition: box-shadow 300ms ease-out;
+  -moz-transition: box-shadow 300ms ease-out;
+  -o-transition: box-shadow 300ms ease-out;
+  -ms-transition: box-shadow 300ms ease-out;
+  transition: box-shadow 300ms ease-out;
 }
 .peek-dots .peek-dot::after {
   top: 10%;
   left: 10%;
   width: 80%;
   height: 80%;
-  background-color: #fff;
-  -webkit-box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
-  box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
-}
-.peek-dots .peek-dot.dot-current {
-  -webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -o-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-  transform: scale(1.2);
-}
-.peek-dots .peek-dot.dot-current::before {
+  background-color: rgba(0,0,0,0.25);
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -o-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
   opacity: 1;
   -ms-filter: none;
   filter: none;
+  -webkit-transition: -webkit-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  -moz-transition: -moz-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  -o-transition: -o-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  -ms-transition: -ms-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  transition: transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+}
+.peek-dots .peek-dot .highlight {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background-color: transparent;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(0);
+  -moz-transform: translate(-50%, -50%) scale(0);
+  -o-transform: translate(-50%, -50%) scale(0);
+  -ms-transform: translate(-50%, -50%) scale(0);
+  transform: translate(-50%, -50%) scale(0);
+  -webkit-transition: -webkit-transform 300ms ease-out, background-color 300ms ease-out;
+  -moz-transition: -moz-transform 300ms ease-out, background-color 300ms ease-out;
+  -o-transition: -o-transform 300ms ease-out, background-color 300ms ease-out;
+  -ms-transition: -ms-transform 300ms ease-out, background-color 300ms ease-out;
+  transition: transform 300ms ease-out, background-color 300ms ease-out;
+}
+.peek-dots .peek-dot.dot-current {
+  -webkit-transform: scale(1.15);
+  -moz-transform: scale(1.15);
+  -o-transform: scale(1.15);
+  -ms-transform: scale(1.15);
+  transform: scale(1.15);
+  background-color: rgba(0,0,0,0.25);
+}
+.peek-dots .peek-dot.dot-current::before {
+  -webkit-box-shadow: inset 0 0 0 3px rgba(0,0,0,0.05);
+  box-shadow: inset 0 0 0 3px rgba(0,0,0,0.05);
+}
+.peek-dots .peek-dot.dot-current::after {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -o-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.peek-dots .peek-dot.dot-current .highlight {
+  -webkit-transition-delay: 150ms;
+  -moz-transition-delay: 150ms;
+  -o-transition-delay: 150ms;
+  -ms-transition-delay: 150ms;
+  transition-delay: 150ms;
+  -webkit-transform: translate(-50%, -50%) scale(1);
+  -moz-transform: translate(-50%, -50%) scale(1);
+  -o-transform: translate(-50%, -50%) scale(1);
+  -ms-transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1);
+  background-color: #fff;
 }
 .slide-btn-nav {
   position: absolute;
@@ -167,6 +211,25 @@ body {
   -webkit-border-radius: 50%;
   border-radius: 50%;
   cursor: pointer;
+  -webkit-transition: -webkit-transform 400ms ease-out;
+  -moz-transition: -moz-transform 400ms ease-out;
+  -o-transition: -o-transform 400ms ease-out;
+  -ms-transition: -ms-transform 400ms ease-out;
+  transition: transform 400ms ease-out;
+  -webkit-transform: scale(0.75);
+  -moz-transform: scale(0.75);
+  -o-transform: scale(0.75);
+  -ms-transform: scale(0.75);
+  transform: scale(0.75);
+}
+@media (min-width: 768px) {
+  .slide-btn-nav a {
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -o-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+  }
 }
 .slide-btn-nav a::before,
 .slide-btn-nav a::after {
@@ -178,9 +241,99 @@ body {
   background-color: #fff;
   -webkit-box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
   box-shadow: 1px 1px 10px 0 rgba(0,0,0,0.05);
+  z-index: 1;
+  -webkit-transition: -webkit-transform 300ms ease-out;
+  -moz-transition: -moz-transform 300ms ease-out;
+  -o-transition: -o-transform 300ms ease-out;
+  -ms-transition: -ms-transform 300ms ease-out;
+  transition: transform 300ms ease-out;
+}
+.slide-btn-nav a:hover span::before {
+  -webkit-transition-delay: 200ms;
+  -moz-transition-delay: 200ms;
+  -o-transition-delay: 200ms;
+  -ms-transition-delay: 200ms;
+  transition-delay: 200ms;
+  -webkit-box-shadow: inset 0 0 0 6px rgba(0,0,0,0.05);
+  box-shadow: inset 0 0 0 6px rgba(0,0,0,0.05);
+}
+.slide-btn-nav a:hover span::after {
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -o-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+  opacity: 0;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+  filter: alpha(opacity=0);
+}
+.slide-btn-nav a:active span::before {
+  -webkit-box-shadow: inset 0 0 0 40px rgba(0,0,0,0.25);
+  box-shadow: inset 0 0 0 40px rgba(0,0,0,0.25);
+}
+.slide-btn-nav a span {
+  content: '';
+  display: block;
+  position: absolute;
+  top: calc(50% - 30px);
+  left: calc(50% - 30px);
+  width: 60px;
+  height: 60px;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  background-color: rgba(0,0,0,0.15);
+  opacity: 0.5;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+  filter: alpha(opacity=50);
+  -webkit-transition: background-color 400ms ease-out, opacity 300ms ease-out;
+  -moz-transition: background-color 400ms ease-out, opacity 300ms ease-out;
+  -o-transition: background-color 400ms ease-out, opacity 300ms ease-out;
+  -ms-transition: background-color 400ms ease-out, opacity 300ms ease-out;
+  transition: background-color 400ms ease-out, opacity 300ms ease-out;
+}
+.slide-btn-nav a span::before,
+.slide-btn-nav a span::after {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+.slide-btn-nav a span::before {
+  -webkit-box-shadow: inset 0 0 0 40px rgba(0,0,0,0.05);
+  box-shadow: inset 0 0 0 40px rgba(0,0,0,0.05);
+  -webkit-transition: box-shadow 300ms ease-out;
+  -moz-transition: box-shadow 300ms ease-out;
+  -o-transition: box-shadow 300ms ease-out;
+  -ms-transition: box-shadow 300ms ease-out;
+  transition: box-shadow 300ms ease-out;
+}
+.slide-btn-nav a span::after {
+  background-color: rgba(0,0,0,0.25);
+  -webkit-transform: scale(0);
+  -moz-transform: scale(0);
+  -o-transform: scale(0);
+  -ms-transform: scale(0);
+  transform: scale(0);
+  opacity: 1;
+  -ms-filter: none;
+  filter: none;
+  -webkit-transition: -webkit-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  -moz-transition: -moz-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  -o-transition: -o-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  -ms-transition: -ms-transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
+  transition: transform 200ms ease-out, opacity 400ms ease-out, background-color 400ms ease-out;
 }
 .slide-btn-nav a.prev-btn {
-  left: 40px;
+  left: 0;
+}
+@media (min-width: 768px) {
+  .slide-btn-nav a.prev-btn {
+    left: 40px;
+  }
 }
 .slide-btn-nav a.prev-btn::before,
 .slide-btn-nav a.prev-btn::after {
@@ -188,22 +341,48 @@ body {
 }
 .slide-btn-nav a.prev-btn::before {
   top: calc(50% - 8px);
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
+  -webkit-transform: translate(0, 0) rotate(-45deg);
+  -moz-transform: translate(0, 0) rotate(-45deg);
+  -o-transform: translate(0, 0) rotate(-45deg);
+  -ms-transform: translate(0, 0) rotate(-45deg);
+  transform: translate(0, 0) rotate(-45deg);
 }
 .slide-btn-nav a.prev-btn::after {
   top: calc(50% + 4px);
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
+  -webkit-transform: translate(0, 0) rotate(45deg);
+  -moz-transform: translate(0, 0) rotate(45deg);
+  -o-transform: translate(0, 0) rotate(45deg);
+  -ms-transform: translate(0, 0) rotate(45deg);
+  transform: translate(0, 0) rotate(45deg);
+}
+.slide-btn-nav a.prev-btn:active {
+  -webkit-transform: scale(0.95);
+  -moz-transform: scale(0.95);
+  -o-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+.slide-btn-nav a.prev-btn:hover::before {
+  -webkit-transform: translate(0, 0) rotate(-40deg);
+  -moz-transform: translate(0, 0) rotate(-40deg);
+  -o-transform: translate(0, 0) rotate(-40deg);
+  -ms-transform: translate(0, 0) rotate(-40deg);
+  transform: translate(0, 0) rotate(-40deg);
+}
+.slide-btn-nav a.prev-btn:hover::after {
+  -webkit-transform: translate(0, -1px) rotate(40deg);
+  -moz-transform: translate(0, -1px) rotate(40deg);
+  -o-transform: translate(0, -1px) rotate(40deg);
+  -ms-transform: translate(0, -1px) rotate(40deg);
+  transform: translate(0, -1px) rotate(40deg);
 }
 .slide-btn-nav a.next-btn {
-  right: 40px;
+  right: 0;
+}
+@media (min-width: 768px) {
+  .slide-btn-nav a.next-btn {
+    right: 40px;
+  }
 }
 .slide-btn-nav a.next-btn::before,
 .slide-btn-nav a.next-btn::after {
@@ -211,19 +390,40 @@ body {
 }
 .slide-btn-nav a.next-btn::before {
   top: calc(50% - 8px);
-  -webkit-transform: rotate(45deg);
-  -moz-transform: rotate(45deg);
-  -o-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
+  -webkit-transform: translate(0, 0) rotate(45deg);
+  -moz-transform: translate(0, 0) rotate(45deg);
+  -o-transform: translate(0, 0) rotate(45deg);
+  -ms-transform: translate(0, 0) rotate(45deg);
+  transform: translate(0, 0) rotate(45deg);
 }
 .slide-btn-nav a.next-btn::after {
   top: calc(50% + 4px);
-  -webkit-transform: rotate(-45deg);
-  -moz-transform: rotate(-45deg);
-  -o-transform: rotate(-45deg);
-  -ms-transform: rotate(-45deg);
-  transform: rotate(-45deg);
+  -webkit-transform: translate(0, 0) rotate(-45deg);
+  -moz-transform: translate(0, 0) rotate(-45deg);
+  -o-transform: translate(0, 0) rotate(-45deg);
+  -ms-transform: translate(0, 0) rotate(-45deg);
+  transform: translate(0, 0) rotate(-45deg);
+}
+.slide-btn-nav a.next-btn:active {
+  -webkit-transform: scale(0.95);
+  -moz-transform: scale(0.95);
+  -o-transform: scale(0.95);
+  -ms-transform: scale(0.95);
+  transform: scale(0.95);
+}
+.slide-btn-nav a.next-btn:hover::before {
+  -webkit-transform: translate(0, 0) rotate(40deg);
+  -moz-transform: translate(0, 0) rotate(40deg);
+  -o-transform: translate(0, 0) rotate(40deg);
+  -ms-transform: translate(0, 0) rotate(40deg);
+  transform: translate(0, 0) rotate(40deg);
+}
+.slide-btn-nav a.next-btn:hover::after {
+  -webkit-transform: translate(0, -1px) rotate(-40deg);
+  -moz-transform: translate(0, -1px) rotate(-40deg);
+  -o-transform: translate(0, -1px) rotate(-40deg);
+  -ms-transform: translate(0, -1px) rotate(-40deg);
+  transform: translate(0, -1px) rotate(-40deg);
 }
 .selected {
   -webkit-transform: translateX(0);

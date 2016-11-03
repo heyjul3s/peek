@@ -174,19 +174,23 @@
         function _createPeekDots() {
 
             let frag   = document.createDocumentFragment(),
-                anchor = document.createElement('a'),
                 dotNav = _createElement('nav', {
                     className : 'peek-dots'
                 }),
-                i = 0;
+                i = 0,
+                anchor,
+                span;
 
             for ( i ; i < slidesCount; i += 1 ) {
                 anchor = document.createElement('a');
+                span   = document.createElement('span');
 
                 //set initial dot with "dot-current" class
                 anchor.className = ( i === currentIndex ) ? 'peek-dot dot-current': 'peek-dot';
-                //set to false, no need for deep cloning
-                dotNav.appendChild(anchor.cloneNode(false));
+                span.className = 'highlight';
+                
+                anchor.appendChild(span);
+                dotNav.appendChild(anchor.cloneNode(true));
             }
 
             slider.parentNode.appendChild( frag.appendChild(dotNav) );
@@ -205,7 +209,7 @@
                     })
                 ),
 
-                prevBtn   = _createElement('a', {
+                prevBtn = _createElement('a', {
                     className : 'prev-btn',
                     setAttribute : {
                         'data'  : 'data-direction',
@@ -213,14 +217,24 @@
                     }
                 }),
 
-                nextBtn   = _createElement('a', {
+                prevBtnSpan = _createElement('span', {
+                    className : 'prev-btn-overlay'
+                }),
+
+                nextBtn = _createElement('a', {
                     className : 'next-btn',
                     setAttribute : {
                         'data'  : 'data-direction',
                         'value' : 'next'
                     }
+                }),
+
+                nextBtnSpan = _createElement('span', {
+                    className : 'next-btn-overlay'
                 });
 
+            prevBtn.appendChild(prevBtnSpan);
+            nextBtn.appendChild(nextBtnSpan);
             frag.appendChild(prevBtn);
             frag.appendChild(nextBtn);
             slider.parentNode.appendChild( frag );
